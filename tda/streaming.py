@@ -102,7 +102,7 @@ class _Handler:
 class StreamClient(EnumEnforcer):
 
     def __init__(self, client, *, account_id=None,
-                 enforce_enums=True, ssl_context=None):
+                 enforce_enums=True, ssl_context=None, loop=None):
         super().__init__(enforce_enums)
 
         self._ssl_context = ssl_context
@@ -136,7 +136,7 @@ class StreamClient(EnumEnforcer):
         # Initialize the JSON parser to be the naive parser which directly calls
         # ``json.loads``
         self.json_decoder = NaiveJsonStreamDecoder()
-        self._lock = asyncio.Lock()
+        self._lock = asyncio.Lock(loop=loop)
 
     def set_json_decoder(self, json_decoder):
         '''
